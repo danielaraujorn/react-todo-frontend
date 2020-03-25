@@ -18,9 +18,9 @@ export const Box: FunctionComponent<BoxProps> = ({
 }) => {
   return (
     <Styled.Container className={className} variant={variant}>
-      {left && <Styled.Left>{left}</Styled.Left>}
-      {children}
-      {right && <Styled.Right>{right}</Styled.Right>}
+      {left && <Styled.Side>{left}</Styled.Side>}
+      <Styled.FullWidth>{children}</Styled.FullWidth>
+      {right && <Styled.Side>{right}</Styled.Side>}
     </Styled.Container>
   )
 }

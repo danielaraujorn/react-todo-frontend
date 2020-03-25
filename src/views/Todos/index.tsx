@@ -1,42 +1,45 @@
-import React, { useState, useEffect, useContext, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { PageTitle } from '../../components/PageTitle'
-import { FiCheck } from 'react-icons/fi'
+import { FiCheck, FiArrowLeft } from 'react-icons/fi'
 import { Input } from '../../components/Input'
 import { ItemCard, ItemsLoading } from '../../components/ItemCard'
 import { Container } from '../../components/Container'
 import { IconButton } from '../../components/Button'
 import { VerticalSpace } from '../../components/VerticalSpace'
-import { InternalThemeContext } from '../../contexts/InternalThemeContext'
 import { theme } from './theme'
-import { TODOS_QUERY } from '../../services/gqls/todos'
 import { CREATE_TODO_MUTATION } from '../../services/gqls/createTodo'
 import { EDIT_TODO_MUTATION } from '../../services/gqls/editTodo'
 import { DELETE_TODO_MUTATION } from '../../services/gqls/deleteTodo'
+import { LIST_QUERY } from '../../services/gqls/list'
 import { useParams } from 'react-router-dom'
+import { Link } from '../../components/Link'
+import { useInternalTheme } from '../../hooks/useInternalTheme'
 
 const Todos = () => {
-  const { setTheme } = useContext(InternalThemeContext)
-  useEffect(() => {
-    setTheme(theme)
-  })
+  useInternalTheme(theme)
 
   const { listId } = useParams()
 
   const [newTodoText, setNewTodoText] = useState('')
 
-  const { data, error, loading } = useQuery(TODOS_QUERY)
+  const { data, error, loading } = useQuery(LIST_QUERY, {
+    variables: { id: listId }
+  })
+
+  const refetchQueries = ['list']
+
   const [createTodo] = useMutation(CREATE_TODO_MUTATION, {
     variables: { text: newTodoText, listId },
-    refetchQueries: ['todos']
+    refetchQueries
   })
 
   const [editTodo] = useMutation(EDIT_TODO_MUTATION, {
-    refetchQueries: ['todos']
+    refetchQueries
   })
 
   const [deleteTodo] = useMutation(DELETE_TODO_MUTATION, {
-    refetchQueries: ['todos']
+    refetchQueries
   })
 
   const onSubmit = (e: any) => {
@@ -51,15 +54,9 @@ const Todos = () => {
   const todosList = useMemo(() => {
     if (loading) return <ItemsLoading />
     if (error || !data) return <div></div>
-    const {
-      todos = {}
-    }: {
-      todos: { items?: Array<{ id: string; text: string }>; total?: number }
-    } = data
-    const { items = [] } = todos
-    return items.map(item => (
+    return data?.list?.todos.map((todo: { id: string; text: string }) => (
       <ItemCard
-        key={item.id}
+        key={todo.id}
         onEdit={({ id, text, ...restTodo }: { id: string; text: string }) =>
           editTodo({
             variables: { id, text, listId },
@@ -67,7 +64,7 @@ const Todos = () => {
           })
         }
         onDelete={({ id }: { id: string }) => deleteTodo({ variables: { id } })}
-        item={item}
+        item={todo}
       />
     ))
   }, [data, deleteTodo, editTodo, error, listId, loading])
@@ -75,9 +72,19 @@ const Todos = () => {
   return (
     <Container>
       <VerticalSpace>
-        <PageTitle>Itens</PageTitle>
+        <PageTitle
+          text={data?.list?.text}
+          left={
+            <Link to='/'>
+              <IconButton>
+                <FiArrowLeft />
+              </IconButton>
+            </Link>
+          }
+        />
         <form onSubmit={onSubmit}>
           <Input
+            disabled={!!loading || !!error}
             placeholder='Novo item'
             value={newTodoText}
             onChange={({ target: { value } }: { target: { value: string } }) =>

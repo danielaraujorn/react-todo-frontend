@@ -1,15 +1,8 @@
 import styled from 'styled-components'
 
-export const Left = styled.div`
+export const Side = styled.div`
   height: fit-content;
-  margin: auto 0;
-  margin-left: 12px;
-`
-
-export const Right = styled.div`
-  height: fit-content;
-  margin: auto;
-  margin-right: 12px;
+  margin: auto 12px;
 `
 
 export type variantType = 'concave' | 'convex' | 'inset'
@@ -50,4 +43,7 @@ export const Container = styled.div`
   border-radius: 30px;
   display: flex;
   transition-duration: 300ms;
+`
+export const FullWidth = styled.div`
+  flex: 1;
 `

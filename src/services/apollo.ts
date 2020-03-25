@@ -15,7 +15,9 @@ export const client = new ApolloClient({
   },
   onError: ({ graphQLErrors }) => {
     console.log(graphQLErrors)
-    if (graphQLErrors?.some(({ message }) => message === 'Unauthorized'))
+    if (graphQLErrors?.some(({ message }) => message === 'Unauthorized')) {
       deleteAuthToken()
+      window.location.reload()
+    }
   }
 })

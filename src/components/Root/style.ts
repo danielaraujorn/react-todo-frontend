@@ -7,4 +7,8 @@ export const Container = styled.div<{ theme: themeInterface }>`
   flex-direction: column;
   background-color: ${({ theme }) => theme.primary.main};
   transition-duration: 150ms;
+  *::selection {
+    color: ${({ theme }) => theme.primary.main};
+    background-color: ${({ theme }) => theme.text.color};
+  }
 `

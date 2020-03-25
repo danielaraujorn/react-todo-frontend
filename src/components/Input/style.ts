@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Right } from '../Box/style'
+import { Side } from '../Box/style'
 
 export const Input = styled.input`
   background: none;
@@ -12,7 +12,7 @@ export const Input = styled.input`
   &::placeholder {
     color: ${({ theme }) => theme.text.placeholder.color};
   }
-  &:placeholder-shown ~ ${Right} {
+  &:placeholder-shown ~ ${Side} {
     opacity: 0.4;
   }
   &:-webkit-autofill,

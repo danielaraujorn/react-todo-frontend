@@ -11,6 +11,7 @@ export const TextContainer = styled.div`
   padding: 18px;
   padding-left: 20px;
   padding-right: 0;
+  ${({ clickable }: { clickable: boolean }) => clickable && 'cursor:pointer;'}
 `
 export const Icons = styled.div`
   display: flex;
@@ -25,13 +26,13 @@ const ElevationAnimation = (opacity: number) => keyframes`
   to { opacity: 0; }
 `
 
-export const LoadingBox = styled(Box)`
+export const LoadingBox = styled(Box)<{ index: number; total: number }>`
   height: 54px;
-  opacity: ${({ index = 0 }: { index: number }) => (4 - index) / 4};
-  animation-name: ${({ index = 0 }: { index: number }) =>
-    ElevationAnimation((4 - index) / 4)};
+  opacity: ${({ index = 0, total = 1 }) => (total - index) / total};
+  animation-name: ${({ index = 0, total = 1 }) =>
+    ElevationAnimation((total - index) / total)};
   animation-iteration-count: infinite;
   animation-duration: 600ms;
   animation-direction: alternate;
-  animation-delay: ${({ index = 0 }: { index: number }) => index * 100}ms;
+  animation-delay: ${({ index = 0 }) => index * 100}ms;
 `

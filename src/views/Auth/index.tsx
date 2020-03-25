@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { PageTitle } from '../../components/PageTitle'
 import { Input } from '../../components/Input'
@@ -7,18 +7,17 @@ import { Button, BottomButtons } from '../../components/Button'
 import { PasswordInput } from '../../components/PasswordInput'
 import { VerticalSpace } from '../../components/VerticalSpace'
 import { REGISTER_MUTATION } from '../../services/gqls/register'
-import { InternalThemeContext } from '../../contexts/InternalThemeContext'
 import { AuthContext } from '../../contexts/AuthContext'
 import { loginTheme, registerTheme } from './theme'
 import { LOGIN_MUTATION } from '../../services/gqls/login'
+import { useInternalTheme } from '../../hooks/useInternalTheme'
 
 const Auth = () => {
   const [loginMode, setLoginMode] = useState(true)
-  const { setTheme } = useContext(InternalThemeContext)
+  useInternalTheme(loginMode ? loginTheme : registerTheme)
+
   const { logIn } = useContext(AuthContext)
-  useEffect(() => {
-    setTheme(loginMode ? loginTheme : registerTheme)
-  }, [loginMode, setTheme])
+
   const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -51,7 +50,7 @@ const Auth = () => {
     <Container center>
       <form onSubmit={onSubmit}>
         <VerticalSpace>
-          <PageTitle>{loginMode ? 'Login' : 'Registrar'}</PageTitle>
+          <PageTitle text={loginMode ? 'Login' : 'Registrar'} />
           {!loginMode && (
             <Input
               name='given-name'
@@ -79,10 +78,10 @@ const Auth = () => {
             }
           />
           <BottomButtons>
-            <Button fullWidth onClick={toggleLoginState}>
+            <Button fullWidth flat onClick={toggleLoginState}>
               {loginMode ? 'Registrar' : 'Entrar'}
             </Button>
-            <Button fullWidth outlined type='submit'>
+            <Button fullWidth type='submit'>
               {loginMode ? 'Entrar' : 'Registrar'}
             </Button>
           </BottomButtons>

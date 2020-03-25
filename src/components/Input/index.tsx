@@ -1,6 +1,6 @@
 import React, { FunctionComponent, ReactNode, useState } from 'react'
-import { Box } from '../Box'
 import * as Styled from './style'
+import { Box } from '../Box'
 
 type InputProps = {
   right?: ReactNode
@@ -12,6 +12,7 @@ type InputProps = {
   inputProps?: any
   autoFocus?: boolean
   required?: boolean
+  disabled?: boolean
 }
 
 export const Input: FunctionComponent<InputProps> = ({
@@ -23,7 +24,8 @@ export const Input: FunctionComponent<InputProps> = ({
   autoFocus,
   required,
   type,
-  name
+  name,
+  disabled
 }) => {
   const { onFocus, onBlur } = inputProps
   const [focused, setFocused] = useState(false)
@@ -40,6 +42,7 @@ export const Input: FunctionComponent<InputProps> = ({
           onBlur && onBlur()
         }}
         name={name || inputProps.name}
+        disabled={disabled || inputProps.disabled}
         required={required || inputProps.required}
         type={type || inputProps.type}
         autoFocus={autoFocus || inputProps.autoFocus}

@@ -4,14 +4,13 @@ export const Button = styled.button.attrs(({ type }) => ({
   type: type || 'button'
 }))<{
   fullWidth?: boolean
-  outlined?: boolean
+  flat?: boolean
   theme: Object
 }>`
   width: ${({ fullWidth = false }) => (fullWidth ? '100%' : 'initial')};
-  border: ${({ outlined = false, theme }) =>
-    outlined ? '1px solid ' + theme.text.color : 'none'};
   text-transform: uppercase;
   text-shadow: 2px 2px 5px #0002;
+  border: none;
   background: no-repeat;
   -webkit-tap-highlight-color: transparent;
   outline: none;
@@ -24,7 +23,10 @@ export const Button = styled.button.attrs(({ type }) => ({
   border-radius: 30px;
   transition-duration: 200ms;
   opacity: 0.8;
-  box-shadow: 4px 4px 10px inset #fff1, -4px -4px 10px inset #0001;
+  box-shadow: ${({ flat = false }) =>
+    flat
+      ? '0px 0px 0px inset #fff0, 0px 0px 0px inset #0000'
+      : '4px 4px 10px inset #ffffff18, -4px -4px 10px inset #00000016'};
   color: ${({ theme }) => theme.text.color};
   &:hover,
   &:focus {

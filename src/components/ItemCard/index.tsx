@@ -14,13 +14,15 @@ type ItemCardProps = {
   item: itemType
   onEdit: Function
   onDelete: Function
+  onClick?: Function
 }
 
-export const ItemsLoading = () => {
+export const ItemsLoading = ({ total = 4 }: { total?: number }) => {
+  const array = new Array(total).fill({})
   return (
     <>
-      {[0, 1, 2, 3].map(num => (
-        <Styled.LoadingBox key={num} index={num} />
+      {array.map((_, index) => (
+        <Styled.LoadingBox key={index} index={index} total={total} />
       ))}
     </>
   )
@@ -29,7 +31,8 @@ export const ItemsLoading = () => {
 export const ItemCard: FunctionComponent<ItemCardProps> = ({
   item,
   onEdit,
-  onDelete
+  onDelete,
+  onClick
 }) => {
   const [editMode, setEditMode] = useState(false)
   const { text } = item
@@ -65,7 +68,11 @@ export const ItemCard: FunctionComponent<ItemCardProps> = ({
               </>
             ) : (
               <>
-                <IconButton onClick={() => setEditMode(true)}>
+                <IconButton
+                  onClick={e => {
+                    setEditMode(true)
+                  }}
+                >
                   <FiEdit2 />
                 </IconButton>
                 <IconButton onClick={() => onDelete(item)}>
@@ -85,7 +92,10 @@ export const ItemCard: FunctionComponent<ItemCardProps> = ({
             }
           />
         ) : (
-          <Styled.TextContainer>
+          <Styled.TextContainer
+            onClick={() => onClick && onClick(item)}
+            clickable={!!onClick}
+          >
             <Text>{text}</Text>
           </Styled.TextContainer>
         )}
