@@ -10,6 +10,7 @@ import { AuthContext } from '../contexts/AuthContext'
 const Auth = lazy(() => import('../views/Auth'))
 const Lists = lazy(() => import('../views/Lists'))
 const Todos = lazy(() => import('../views/Todos'))
+const Profile = lazy(() => import('../views/Profile'))
 
 const PublicRoutes = () => (
   <>
@@ -30,6 +31,11 @@ const PrivateRoutes = () => (
       <Route exact path='/'>
         <Suspense fallback={<div />}>
           <Lists />
+        </Suspense>
+      </Route>
+      <Route exact path='/profile'>
+        <Suspense fallback={<div />}>
+          <Profile />
         </Suspense>
       </Route>
       <Route exact path='/:listId'>

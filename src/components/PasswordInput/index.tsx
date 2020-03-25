@@ -6,18 +6,23 @@ import { IconButton } from '../Button'
 type PasswordInputProps = {
   value: string
   onChange: Function
+  placeholder?: string
+  inputProps?: any
 }
 
 export const PasswordInput: FunctionComponent<PasswordInputProps> = ({
   value,
-  onChange = () => {}
+  onChange,
+  placeholder,
+  inputProps
 }) => {
   const [visible, setVisible] = useState(false)
   const icon = useMemo(() => (visible ? <FiEyeOff /> : <FiEye />), [visible])
   return (
     <Input
       type={visible ? 'text' : 'password'}
-      placeholder='Senha'
+      placeholder={placeholder || 'Senha'}
+      inputProps={inputProps}
       value={value}
       onChange={onChange}
       right={

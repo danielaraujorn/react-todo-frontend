@@ -76,7 +76,7 @@ const Lists = () => {
         <PageTitle
           text='Listas'
           left={
-            <IconButton disabled>
+            <IconButton onClick={() => history.push('/profile')}>
               <FiUser />
             </IconButton>
           }
