@@ -1,0 +1,23 @@
+{
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "rulesDirectory": ["tslint-plugin-prettier"],
+  "rules": {
+    "semicolon": [true, "never"],
+    "quotemark": [true, "single"],
+    "max-line-length": [true, 150],
+    "interface-name": [false],
+    "arrow-parens": false,
+    "object-literal-sort-keys": false,
+    "no-duplicate-imports": [true, { "allow-namespace-imports": true }],
+    "no-for-in": true,
+    "only-arrow-functions": true,
+    "await-promise": true,
+    "no-empty": [true, "allow-empty-catch"],
+    "prefer-object-spread": true,
+    "arrow-return-shorthand": [true, "multiline"],
+    "prettier": true,
+    "no-console": [true, "log", "warn"],
+    "no-unused-expression": false
+  }
+}

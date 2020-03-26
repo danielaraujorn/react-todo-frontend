@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
 export const Button = styled.button.attrs(({ type }) => ({
-  type: type || 'button'
+  type: type || 'button',
 }))<{
   fullWidth?: boolean
   flat?: boolean
-  theme: Object
+  theme: object
 }>`
   width: ${({ fullWidth = false }) => (fullWidth ? '100%' : 'initial')};
   text-transform: uppercase;

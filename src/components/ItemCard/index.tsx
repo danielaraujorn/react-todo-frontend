@@ -1,38 +1,31 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useState, ReactNode } from 'react'
 import { FiEdit2, FiTrash, FiCheck, FiX } from 'react-icons/fi'
 import * as Styled from './style'
-import { Text } from '../Text'
 import { IconButton } from '../Button'
 import { Box } from '../Box'
 import { Input } from '../Input/style'
 
 type itemType = {
+  id: string
   text: string
 }
 
 type ItemCardProps = {
+  left?: ReactNode
   item: itemType
-  onEdit: Function
-  onDelete: Function
-  onClick?: Function
-}
-
-export const ItemsLoading = ({ total = 4 }: { total?: number }) => {
-  const array = new Array(total).fill({})
-  return (
-    <>
-      {array.map((_, index) => (
-        <Styled.LoadingBox key={index} index={index} total={total} />
-      ))}
-    </>
-  )
+  onEdit: (item: itemType) => void
+  onDelete: (item: itemType) => void
+  onClick?: (item: itemType) => void
+  completed?: boolean
 }
 
 export const ItemCard: FunctionComponent<ItemCardProps> = ({
   item,
   onEdit,
   onDelete,
-  onClick
+  onClick,
+  left,
+  completed,
 }) => {
   const [editMode, setEditMode] = useState(false)
   const { text } = item
@@ -49,6 +42,7 @@ export const ItemCard: FunctionComponent<ItemCardProps> = ({
   return (
     <form onSubmit={onSubmit}>
       <Box
+        left={left}
         variant={editMode ? 'concave' : 'convex'}
         right={
           <Styled.Icons>
@@ -69,7 +63,7 @@ export const ItemCard: FunctionComponent<ItemCardProps> = ({
             ) : (
               <>
                 <IconButton
-                  onClick={e => {
+                  onClick={(e) => {
                     setEditMode(true)
                   }}
                 >
@@ -93,10 +87,11 @@ export const ItemCard: FunctionComponent<ItemCardProps> = ({
           />
         ) : (
           <Styled.TextContainer
+            toLeft={!!left}
             onClick={() => onClick && onClick(item)}
             clickable={!!onClick}
           >
-            <Text>{text}</Text>
+            <Styled.Text completed={completed}>{text}</Styled.Text>
           </Styled.TextContainer>
         )}
       </Box>

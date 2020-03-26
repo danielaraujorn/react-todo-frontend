@@ -7,7 +7,6 @@ export const Input = styled.input`
   outline: none;
   color: ${({ theme }) => theme.text.color};
   font-size: 16px;
-  padding: 18px 20px;
   width: 100%;
   &::placeholder {
     color: ${({ theme }) => theme.text.placeholder.color};

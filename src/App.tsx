@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react'
 import { ThemeProvider, ThemeConsumer } from 'styled-components'
 import { IconContext } from 'react-icons'
-import { Root } from './components/Root'
+import { Root } from './components'
 import { Navigation } from './Navigation'
-import { theme, themeInterface } from './theme'
+import { theme, themeType } from './theme'
 import { InternalThemeContext } from './contexts/InternalThemeContext'
 import { AuthContext } from './contexts/AuthContext'
 import { setAuthToken, deleteAuthToken, getAuthToken } from './utils/cookies'
@@ -14,7 +14,7 @@ const App = () => {
 
   const [logged, setLogged]: [boolean, any] = useState(!!getAuthToken())
 
-  const [themeSelected, setTheme]: [themeInterface, any] = useState(theme)
+  const [themeSelected, setTheme]: [themeType, any] = useState(theme)
 
   const logIn = useCallback(
     (token: { accessToken: string; expiresIn: number }) => {
@@ -23,10 +23,10 @@ const App = () => {
       setLogged(true)
       client.resetStore()
     },
-    [client]
+    [client],
   )
 
-  const logOut = useCallback((): any => {
+  const logOut = useCallback(() => {
     deleteAuthToken()
     setLogged(false)
     client.resetStore()
@@ -37,29 +37,26 @@ const App = () => {
       <InternalThemeContext.Provider
         value={{
           theme: themeSelected,
-          setTheme: theme => {
+          setTheme: (newTheme) => {
             const metaThemeColor = document.querySelector(
-              'meta[name=theme-color]'
+              'meta[name=theme-color]',
             )
-            metaThemeColor &&
-              metaThemeColor.setAttribute('content', theme.primary.main)
-            setTheme(theme)
-          }
+            metaThemeColor?.setAttribute('content', newTheme.primary.main)
+            setTheme(newTheme)
+          },
         }}
       >
         <ThemeProvider theme={themeSelected}>
           <ThemeConsumer>
-            {({ icon }) => {
-              return (
-                <IconContext.Provider
-                  value={{ color: icon.color, size: '1.2em' }}
-                >
-                  <Root theme={themeSelected}>
-                    <Navigation />
-                  </Root>
-                </IconContext.Provider>
-              )
-            }}
+            {({ icon }) => (
+              <IconContext.Provider
+                value={{ color: icon.color, size: '1.2em' }}
+              >
+                <Root theme={themeSelected}>
+                  <Navigation />
+                </Root>
+              </IconContext.Provider>
+            )}
           </ThemeConsumer>
         </ThemeProvider>
       </InternalThemeContext.Provider>

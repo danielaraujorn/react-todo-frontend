@@ -10,12 +10,10 @@ type PageTitleProps = {
 export const PageTitle: FunctionComponent<PageTitleProps> = ({
   left,
   text,
-  className
-}) => {
-  return (
-    <Styled.Container className={className}>
-      {left && <Styled.Left>{left}</Styled.Left>}
-      <Styled.PageTitle>{text}</Styled.PageTitle>
-    </Styled.Container>
-  )
-}
+  className,
+}) => (
+  <Styled.Container className={className}>
+    {left && <Styled.Left>{left}</Styled.Left>}
+    <Styled.PageTitle>{text}</Styled.PageTitle>
+  </Styled.Container>
+)

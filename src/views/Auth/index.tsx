@@ -1,15 +1,18 @@
 import React, { useState, useContext } from 'react'
 import { useMutation } from '@apollo/react-hooks'
-import { PageTitle } from '../../components/PageTitle'
-import { Input } from '../../components/Input'
-import { Container } from '../../components/Container'
-import { Button, BottomButtons } from '../../components/Button'
-import { PasswordInput } from '../../components/PasswordInput'
-import { VerticalSpace } from '../../components/VerticalSpace'
-import { REGISTER_MUTATION } from '../../services/gqls/register'
-import { AuthContext } from '../../contexts/AuthContext'
 import { loginTheme, registerTheme } from './theme'
-import { LOGIN_MUTATION } from '../../services/gqls/login'
+import {
+  PageTitle,
+  Input,
+  Container,
+  Button,
+  BottomButtons,
+  PasswordInput,
+  VerticalSpace,
+} from '../../components'
+import { AuthContext } from '../../contexts/AuthContext'
+import { LOGIN_MUTATION } from '../../gqls/login'
+import { REGISTER_MUTATION } from '../../gqls/register'
 import { useInternalTheme } from '../../hooks/useInternalTheme'
 
 const Auth = () => {
@@ -24,7 +27,7 @@ const Auth = () => {
 
   const checkAndLogin = ({
     success,
-    token
+    token,
   }: {
     success: boolean
     token?: any
@@ -32,11 +35,11 @@ const Auth = () => {
 
   const [registerMutation] = useMutation(REGISTER_MUTATION, {
     variables: { email, password, firstName },
-    onCompleted: ({ register }) => checkAndLogin(register)
+    onCompleted: ({ register }) => checkAndLogin(register),
   })
   const [loginMutation] = useMutation(LOGIN_MUTATION, {
     variables: { email, password },
-    onCompleted: ({ login }) => checkAndLogin(login)
+    onCompleted: ({ login }) => checkAndLogin(login),
   })
 
   const onSubmit = (e: any) => {
@@ -57,7 +60,7 @@ const Auth = () => {
               placeholder='Primeiro nome'
               value={firstName}
               onChange={({
-                target: { value }
+                target: { value },
               }: {
                 target: { value: string }
               }) => setFirstName(value)}
@@ -67,15 +70,11 @@ const Auth = () => {
             placeholder='Email'
             type='email'
             value={email}
-            onChange={({ target: { value } }: { target: { value: string } }) =>
-              setEmail(value)
-            }
+            onChange={({ target: { value } }) => setEmail(value)}
           />
           <PasswordInput
             value={password}
-            onChange={({ target: { value } }: { target: { value: string } }) =>
-              setPassword(value)
-            }
+            onChange={({ target: { value } }) => setPassword(value)}
           />
           <BottomButtons>
             <Button fullWidth flat onClick={toggleLoginState}>

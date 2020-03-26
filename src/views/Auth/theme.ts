@@ -1,29 +1,29 @@
 export const loginTheme = {
   primary: {
-    main: '#781ea7'
+    main: '#781ea7',
   },
   text: {
     color: 'white',
     placeholder: {
-      color: '#FFFFFF65'
-    }
+      color: '#FFFFFF65',
+    },
   },
   icon: {
-    color: 'white'
-  }
+    color: 'white',
+  },
 }
 
 export const registerTheme = {
   primary: {
-    main: '#394ba2'
+    main: '#394ba2',
   },
   text: {
     color: 'white',
     placeholder: {
-      color: '#FFFFFF65'
-    }
+      color: '#FFFFFF65',
+    },
   },
   icon: {
-    color: 'white'
-  }
+    color: 'white',
+  },
 }

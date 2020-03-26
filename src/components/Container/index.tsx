@@ -10,11 +10,9 @@ type ContainerProps = {
 export const Container: FunctionComponent<ContainerProps> = ({
   children,
   className,
-  center = false
-}) => {
-  return (
-    <Styled.Container center={center} className={className}>
-      <Styled.Content>{children}</Styled.Content>
-    </Styled.Container>
-  )
-}
+  center = false,
+}) => (
+  <Styled.Container center={center} className={className}>
+    <Styled.Content>{children}</Styled.Content>
+  </Styled.Container>
+)

@@ -1,19 +1,24 @@
 import React, { useState, useMemo } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import { PageTitle } from '../../components/PageTitle'
 import { FiCheck, FiArrowLeft } from 'react-icons/fi'
-import { Input } from '../../components/Input'
-import { ItemCard, ItemsLoading } from '../../components/ItemCard'
-import { Container } from '../../components/Container'
-import { IconButton } from '../../components/Button'
-import { VerticalSpace } from '../../components/VerticalSpace'
-import { theme } from './theme'
-import { CREATE_TODO_MUTATION } from '../../services/gqls/createTodo'
-import { EDIT_TODO_MUTATION } from '../../services/gqls/editTodo'
-import { DELETE_TODO_MUTATION } from '../../services/gqls/deleteTodo'
-import { LIST_QUERY } from '../../services/gqls/list'
 import { useParams } from 'react-router-dom'
-import { Link } from '../../components/Link'
+import * as Styled from './style'
+import { theme } from './theme'
+import {
+  PageTitle,
+  Input,
+  ItemCard,
+  ItemsLoading,
+  Container,
+  IconButton,
+  VerticalSpace,
+  Link,
+} from '../../components'
+import { CREATE_TODO_MUTATION } from '../../gqls/createTodo'
+import { EDIT_TODO_MUTATION } from '../../gqls/editTodo'
+import { DELETE_TODO_MUTATION } from '../../gqls/deleteTodo'
+import { LIST_QUERY } from '../../gqls/list'
+import { TODOS_QUERY } from '../../gqls/todos'
 import { useInternalTheme } from '../../hooks/useInternalTheme'
 
 const Todos = () => {
@@ -23,23 +28,27 @@ const Todos = () => {
 
   const [newTodoText, setNewTodoText] = useState('')
 
-  const { data, error, loading } = useQuery(LIST_QUERY, {
-    variables: { id: listId }
+  const { data: listData } = useQuery(LIST_QUERY, {
+    variables: { id: listId },
   })
 
-  const refetchQueries = ['list']
+  const { data: todosData, loading: todosLoading } = useQuery(TODOS_QUERY, {
+    variables: { listId },
+  })
+
+  const refetchQueries = ['todos']
 
   const [createTodo] = useMutation(CREATE_TODO_MUTATION, {
     variables: { text: newTodoText, listId },
-    refetchQueries
+    refetchQueries,
   })
 
   const [editTodo] = useMutation(EDIT_TODO_MUTATION, {
-    refetchQueries
+    refetchQueries,
   })
 
   const [deleteTodo] = useMutation(DELETE_TODO_MUTATION, {
-    refetchQueries
+    refetchQueries,
   })
 
   const onSubmit = (e: any) => {
@@ -52,28 +61,46 @@ const Todos = () => {
   }
 
   const todosList = useMemo(() => {
-    if (loading) return <ItemsLoading />
-    if (error || !data) return <div></div>
-    return data?.list?.todos.map((todo: { id: string; text: string }) => (
-      <ItemCard
-        key={todo.id}
-        onEdit={({ id, text, ...restTodo }: { id: string; text: string }) =>
-          editTodo({
-            variables: { id, text, listId },
-            optimisticResponse: { upsertTodo: { id, text, ...restTodo } }
-          })
-        }
-        onDelete={({ id }: { id: string }) => deleteTodo({ variables: { id } })}
-        item={todo}
-      />
-    ))
-  }, [data, deleteTodo, editTodo, error, listId, loading])
+    if (todosLoading || !todosData) return <ItemsLoading />
+    return todosData?.todos?.items?.map(
+      (item: { id: string; text: string; completed: boolean }) => {
+        const { id, completed } = item
+        return (
+          <ItemCard
+            completed={completed}
+            left={
+              <IconButton
+                flat
+                onClick={() =>
+                  editTodo({
+                    variables: { ...item, listId, completed: !completed },
+                    optimisticResponse: { ...item, completed: !completed },
+                  })
+                }
+              >
+                <Styled.Circle completed={completed} />
+              </IconButton>
+            }
+            key={id}
+            onEdit={(todo: { id: string; text: string }) =>
+              editTodo({
+                variables: { ...todo, listId },
+                optimisticResponse: { upsertTodo: todo },
+              })
+            }
+            onDelete={(todo: { id: string }) => deleteTodo({ variables: todo })}
+            item={item}
+          />
+        )
+      },
+    )
+  }, [todosLoading, todosData, editTodo, listId, deleteTodo])
 
   return (
     <Container>
       <VerticalSpace>
         <PageTitle
-          text={data?.list?.text}
+          text={listData?.list?.text || 'Carregando...'}
           left={
             <Link to='/'>
               <IconButton>
@@ -84,7 +111,7 @@ const Todos = () => {
         />
         <form onSubmit={onSubmit}>
           <Input
-            disabled={!!loading || !!error}
+            disabled={!!todosLoading || !todosData}
             placeholder='Novo item'
             value={newTodoText}
             onChange={({ target: { value } }: { target: { value: string } }) =>

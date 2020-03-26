@@ -14,13 +14,11 @@ export const Box: FunctionComponent<BoxProps> = ({
   right,
   variant = 'convex',
   children,
-  className
-}) => {
-  return (
-    <Styled.Container className={className} variant={variant}>
-      {left && <Styled.Side>{left}</Styled.Side>}
-      <Styled.FullWidth>{children}</Styled.FullWidth>
-      {right && <Styled.Side>{right}</Styled.Side>}
-    </Styled.Container>
-  )
-}
+  className,
+}) => (
+  <Styled.Container className={className} variant={variant}>
+    {left && <Styled.Side>{left}</Styled.Side>}
+    <Styled.FullWidth>{children}</Styled.FullWidth>
+    {right && <Styled.Side>{right}</Styled.Side>}
+  </Styled.Container>
+)

@@ -1,15 +1,14 @@
 export const setCookie = (cname: string, cvalue: string, exSeconds: number) => {
-  var d = new Date()
-  d.setTime(d.getTime() + exSeconds * 1000)
-  var expires = 'expires=' + d.toUTCString()
+  const date = new Date()
+  date.setTime(date.getTime() + exSeconds * 1000)
+  const expires = 'expires=' + date.toUTCString()
   document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/'
 }
 
 export const getCookie = (cname: string) => {
-  var name = cname + '='
-  var ca = document.cookie.split(';')
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i]
+  const name = cname + '='
+  const ca = document.cookie.split(';')
+  for (let c of ca) {
     while (c.charAt(0) === ' ') {
       c = c.substring(1)
     }

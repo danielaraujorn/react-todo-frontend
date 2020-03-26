@@ -1,11 +1,11 @@
 import React, { FunctionComponent, ReactNode } from 'react'
 import { useWindowSize } from '../../hooks/useWindowSize'
 import * as Styled from './style'
-import { themeInterface } from '../../theme'
+import { themeType } from '../../theme'
 
 type RootProps = {
   children?: ReactNode
-  theme: themeInterface
+  theme: themeType
 }
 
 export const Root: FunctionComponent<RootProps> = ({ children, theme }) => {

@@ -1,5 +1,5 @@
 import ApolloClient from 'apollo-boost'
-import { getAuthToken, deleteAuthToken } from '../utils/cookies'
+import { getAuthToken, deleteAuthToken } from './utils/cookies'
 
 const formatToken = () => {
   const token = getAuthToken()
@@ -8,16 +8,15 @@ const formatToken = () => {
 
 export const client = new ApolloClient({
   uri: process.env.REACT_APP_SERVER_URL,
-  request: operation => {
+  request: (operation) => {
     operation.setContext({
-      headers: { Authorization: formatToken() }
+      headers: { Authorization: formatToken() },
     })
   },
   onError: ({ graphQLErrors }) => {
-    console.log(graphQLErrors)
     if (graphQLErrors?.some(({ message }) => message === 'Unauthorized')) {
       deleteAuthToken()
       window.location.reload()
     }
-  }
+  },
 })

@@ -2,7 +2,25 @@ import styled from 'styled-components'
 
 export const Side = styled.div`
   height: fit-content;
-  margin: auto 12px;
+  margin: auto 10px;
+  &:first-of-type {
+    margin-right: 6px;
+  }
+  &:last-of-type {
+    margin-left: 6px;
+  }
+`
+
+export const FullWidth = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 16px;
+  & > * {
+    flex: 1;
+    width: 100%;
+  }
 `
 
 export type variantType = 'concave' | 'convex' | 'inset'
@@ -11,7 +29,7 @@ const getBackground = (variant?: variantType): string => {
   if (variant === 'concave' || variant === 'inset')
     return 'linear-gradient(135deg, rgba(0,0,0,0.08), rgba(200,200,200,0))'
   else {
-    //convex
+    // convex
     return 'linear-gradient(-45deg, rgba(0,0,0,0.02), rgba(255,255,255,0.08))'
   }
 }
@@ -28,7 +46,7 @@ const getShadow = (variant?: variantType): string => {
      6px 6px 20px 0 rgba(0, 0, 0, 0.15) inset,
      -6px -6px 20px 0 rgba(255, 255, 255, 0.1) inset`
   else {
-    //convex
+    // convex
     return `6px 6px 8px 0 rgba(0,0,0,0.15),
     -4px -4px 18px 0 rgba(255,255,255,0.15),
     -6px -6px 8px 0 rgba(0,0,0,0.03) inset,
@@ -37,13 +55,14 @@ const getShadow = (variant?: variantType): string => {
 }
 
 export const Container = styled.div`
+  min-height: 50px;
   background: ${({ variant }: { variant?: variantType }) =>
     getBackground(variant)};
   box-shadow: ${({ variant }: { variant?: variantType }) => getShadow(variant)};
   border-radius: 30px;
   display: flex;
   transition-duration: 300ms;
-`
-export const FullWidth = styled.div`
-  flex: 1;
+  ${Side}~${FullWidth}{
+    padding-left:0;
+  }
 `

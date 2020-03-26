@@ -1,4 +1,4 @@
-export interface themeInterface {
+export type themeType = {
   primary: {
     main: string
   }
@@ -13,17 +13,17 @@ export interface themeInterface {
   }
 }
 
-export const theme: themeInterface = {
+export const theme: themeType = {
   primary: {
-    main: '#666'
+    main: '#666',
   },
   text: {
     color: 'white',
     placeholder: {
-      color: '#FFFFFF65'
-    }
+      color: '#FFFFFF65',
+    },
   },
   icon: {
-    color: 'white'
-  }
+    color: 'white',
+  },
 }

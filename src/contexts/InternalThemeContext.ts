@@ -1,7 +1,9 @@
 import { createContext } from 'react'
-import { theme, themeInterface } from '../theme'
+import { theme, themeType } from '../theme'
 
 export const InternalThemeContext = createContext({
   theme,
-  setTheme: (newTheme: themeInterface): void => {}
+  setTheme: (newTheme: themeType): void => {
+    return
+  },
 })

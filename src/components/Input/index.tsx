@@ -8,12 +8,13 @@ type InputProps = {
   type?: string
   value: string
   name?: string
-  onChange: Function
+  onChange: (e: { target: { value: string } }) => void
   inputProps?: any
   autoFocus?: boolean
   required?: boolean
   disabled?: boolean
   autoComplete?: boolean
+  className?: string
 }
 
 export const Input: FunctionComponent<InputProps> = ({
@@ -27,7 +28,8 @@ export const Input: FunctionComponent<InputProps> = ({
   type,
   name,
   disabled,
-  autoComplete
+  autoComplete,
+  className,
 }) => {
   const { onFocus, onBlur } = inputProps
   const [focused, setFocused] = useState(false)
@@ -43,6 +45,7 @@ export const Input: FunctionComponent<InputProps> = ({
           setFocused(false)
           onBlur && onBlur()
         }}
+        className={className}
         name={name || inputProps.name}
         disabled={disabled || inputProps.disabled}
         required={required || inputProps.required}

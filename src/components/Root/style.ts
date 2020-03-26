@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { themeInterface } from '../../theme'
+import { themeType } from '../../theme'
 
-export const Container = styled.div<{ theme: themeInterface }>`
+export const Container = styled.div<{ theme: themeType }>`
   display: flex;
   align-items: center;
   flex-direction: column;

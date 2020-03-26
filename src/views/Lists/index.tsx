@@ -1,18 +1,21 @@
 import React, { useState, useMemo } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import { PageTitle } from '../../components/PageTitle'
 import { FiCheck, FiUser } from 'react-icons/fi'
-import { Input } from '../../components/Input'
-import { ItemCard, ItemsLoading } from '../../components/ItemCard'
-import { Container } from '../../components/Container'
-import { IconButton } from '../../components/Button'
-import { VerticalSpace } from '../../components/VerticalSpace'
-import { theme } from './theme'
-import { LISTS_QUERY } from '../../services/gqls/lists'
-import { CREATE_LIST_MUTATION } from '../../services/gqls/createList'
-import { EDIT_LIST_MUTATION } from '../../services/gqls/editList'
-import { DELETE_LIST_MUTATION } from '../../services/gqls/deleteList'
 import { useHistory } from 'react-router-dom'
+import { theme } from './theme'
+import {
+  PageTitle,
+  Input,
+  ItemCard,
+  ItemsLoading,
+  Container,
+  IconButton,
+  VerticalSpace,
+} from '../../components'
+import { LISTS_QUERY } from '../../gqls/lists'
+import { CREATE_LIST_MUTATION } from '../../gqls/createList'
+import { EDIT_LIST_MUTATION } from '../../gqls/editList'
+import { DELETE_LIST_MUTATION } from '../../gqls/deleteList'
 import { useInternalTheme } from '../../hooks/useInternalTheme'
 
 const Lists = () => {
@@ -25,15 +28,15 @@ const Lists = () => {
   const { data, error, loading } = useQuery(LISTS_QUERY)
   const [createList] = useMutation(CREATE_LIST_MUTATION, {
     variables: { text: newListText },
-    refetchQueries: ['lists']
+    refetchQueries: ['lists'],
   })
 
   const [editList] = useMutation(EDIT_LIST_MUTATION, {
-    refetchQueries: ['lists']
+    refetchQueries: ['lists'],
   })
 
   const [deleteList] = useMutation(DELETE_LIST_MUTATION, {
-    refetchQueries: ['lists']
+    refetchQueries: ['lists'],
   })
 
   const onSubmit = (e: any) => {
@@ -49,19 +52,19 @@ const Lists = () => {
     if (loading) return <ItemsLoading />
     if (error || !data) return <div></div>
     const {
-      lists = {}
+      lists = {},
     }: {
-      lists: { items?: Array<{ id: string; text: string }>; total?: number }
+      lists: { items?: { id: string; text: string }[]; total?: number }
     } = data
     const { items = [] } = lists
-    return items.map(item => (
+    return items.map((item) => (
       <ItemCard
         key={item.id}
         onClick={({ id }: { id: string }) => history.push('/' + id)}
         onEdit={({ id, text, ...restList }: { id: string; text: string }) =>
           editList({
             variables: { id, text },
-            optimisticResponse: { upsertList: { id, text, ...restList } }
+            optimisticResponse: { upsertList: { id, text, ...restList } },
           })
         }
         onDelete={({ id }: { id: string }) => deleteList({ variables: { id } })}
