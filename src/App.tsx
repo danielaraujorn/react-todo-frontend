@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react'
 import { ThemeProvider, ThemeConsumer } from 'styled-components'
 import { IconContext } from 'react-icons'
+import { IntlProvider } from 'react-intl'
+import { messages } from './messages'
 import { Root } from './components'
 import { Navigation } from './Navigation'
 import { theme, themeType } from './theme'
@@ -32,12 +34,15 @@ const App = () => {
     client.resetStore()
   }, [client])
 
+  const language = navigator.language.split(/[-_]/)[0]
+  const selectedMessages = messages[language] || messages['en']
+
   return (
     <AuthContext.Provider value={{ logged, logIn, logOut }}>
       <InternalThemeContext.Provider
         value={{
           theme: themeSelected,
-          setTheme: (newTheme) => {
+          setTheme: newTheme => {
             const metaThemeColor = document.querySelector(
               'meta[name=theme-color]',
             )
@@ -52,9 +57,14 @@ const App = () => {
               <IconContext.Provider
                 value={{ color: icon.color, size: '1.2em' }}
               >
-                <Root theme={themeSelected}>
-                  <Navigation />
-                </Root>
+                <IntlProvider
+                  locale={navigator.language}
+                  messages={selectedMessages}
+                >
+                  <Root theme={themeSelected}>
+                    <Navigation />
+                  </Root>
+                </IntlProvider>
               </IconContext.Provider>
             )}
           </ThemeConsumer>

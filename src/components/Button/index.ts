@@ -18,26 +18,29 @@ export const Button = styled.button.attrs(({ type }) => ({
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'initial' : 'pointer')};
   padding: 16px;
   border-radius: 30px;
   transition-duration: 200ms;
-  opacity: 0.8;
   box-shadow: ${({ flat = false }) =>
     flat
       ? '0px 0px 0px inset #fff0, 0px 0px 0px inset #0000'
       : '4px 4px 10px inset #ffffff18, -4px -4px 10px inset #00000016'};
   color: ${({ theme }) => theme.text.color};
-  &:hover,
-  &:focus {
+  opacity: 0.8;
+  &:hover:not(:disabled),
+  &:focus:not(:disabled) {
     box-shadow: 4px 4px 10px inset #0001, -4px -4px 10px inset #fff1;
     transition-duration: 200ms;
     opacity: 1;
   }
-  &:active {
+  &:active:not(:disabled) {
     box-shadow: 4px 4px 10px inset #0002, -4px -4px 10px inset #fff1;
     transition-duration: 200ms;
     opacity: 1;
+  }
+  &:disabled {
+    opacity: 0.3;
   }
 `
 

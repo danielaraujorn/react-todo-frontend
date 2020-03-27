@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { FiCheck, FiArrowLeft } from 'react-icons/fi'
 import { useParams } from 'react-router-dom'
+import { useIntl } from 'react-intl'
 import * as Styled from './style'
 import { theme } from './theme'
 import {
@@ -22,6 +23,8 @@ import { TODOS_QUERY } from '../../gqls/todos'
 import { useInternalTheme } from '../../hooks/useInternalTheme'
 
 const Todos = () => {
+  const { formatMessage } = useIntl()
+
   useInternalTheme(theme)
 
   const { listId } = useParams()
@@ -64,46 +67,48 @@ const Todos = () => {
     if (todosLoading || !todosData) return <ItemsLoading />
     return todosData?.todos?.items?.map(
       (item: { id: string; text: string; completed: boolean }) => {
-        const { id, completed } = item
+        const { id, text, completed } = item
         return (
           <ItemCard
             completed={completed}
-            left={
+            left={({ editMode }) => (
               <IconButton
+                aria-label={formatMessage({ id: 'toggleTodo' })}
                 flat
+                disabled={editMode}
                 onClick={() =>
                   editTodo({
-                    variables: { ...item, listId, completed: !completed },
+                    variables: { id, text, listId, completed: !completed },
                     optimisticResponse: { ...item, completed: !completed },
                   })
                 }
               >
                 <Styled.Circle completed={completed} />
               </IconButton>
-            }
+            )}
             key={id}
-            onEdit={(todo: { id: string; text: string }) =>
+            onEdit={(todo: { text: string }) =>
               editTodo({
-                variables: { ...todo, listId },
+                variables: { text: todo.text, listId },
                 optimisticResponse: { upsertTodo: todo },
               })
             }
-            onDelete={(todo: { id: string }) => deleteTodo({ variables: todo })}
+            onDelete={() => deleteTodo({ variables: { id } })}
             item={item}
           />
         )
       },
     )
-  }, [todosLoading, todosData, editTodo, listId, deleteTodo])
+  }, [todosLoading, todosData, formatMessage, editTodo, listId, deleteTodo])
 
   return (
     <Container>
       <VerticalSpace>
         <PageTitle
-          text={listData?.list?.text || 'Carregando...'}
+          text={listData?.list?.text}
           left={
             <Link to='/'>
-              <IconButton>
+              <IconButton aria-label={formatMessage({ id: 'lists' })}>
                 <FiArrowLeft />
               </IconButton>
             </Link>
@@ -112,13 +117,17 @@ const Todos = () => {
         <form onSubmit={onSubmit}>
           <Input
             disabled={!!todosLoading || !todosData}
-            placeholder='Novo item'
+            placeholder={formatMessage({ id: 'newTodo' })}
             value={newTodoText}
             onChange={({ target: { value } }: { target: { value: string } }) =>
               setNewTodoText(value)
             }
             right={
-              <IconButton disabled={!newTodoText} type='submit'>
+              <IconButton
+                aria-label={formatMessage({ id: 'createTodo' })}
+                disabled={!newTodoText}
+                type='submit'
+              >
                 <FiCheck />
               </IconButton>
             }

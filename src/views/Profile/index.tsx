@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
+import { useIntl } from 'react-intl'
 import { theme } from './theme'
 import {
   PageTitle,
@@ -19,6 +20,8 @@ import { OWN_USER_QUERY } from '../../gqls/ownUser'
 import { UPDATE_USER__MUTATION } from '../../gqls/updateUser'
 
 const Profile = () => {
+  const { formatMessage } = useIntl()
+
   useInternalTheme(theme)
 
   const history = useHistory()
@@ -63,23 +66,26 @@ const Profile = () => {
       <form onSubmit={onSubmit}>
         <VerticalSpace>
           <PageTitle
-            text='Perfil'
+            text={formatMessage({ id: 'profile' })}
             left={
-              <IconButton onClick={toHomePage}>
+              <IconButton
+                aria-label={formatMessage({ id: 'lists' })}
+                onClick={toHomePage}
+              >
                 <FiArrowLeft />
               </IconButton>
             }
           />
           <Input
             name='given-name'
-            placeholder='Primeiro nome'
+            placeholder={formatMessage({ id: 'firstName' })}
             value={firstName}
             onChange={({ target: { value } }: { target: { value: string } }) =>
               setState({ firstName: value })
             }
           />
           <Input
-            placeholder='Email'
+            placeholder={formatMessage({ id: 'email' })}
             type='email'
             value={email}
             onChange={({ target: { value } }: { target: { value: string } }) =>
@@ -93,11 +99,20 @@ const Profile = () => {
             }
           />
           <BottomButtons>
-            <Button fullWidth flat onClick={toHomePage}>
-              Cancelar
+            <Button
+              fullWidth
+              flat
+              onClick={toHomePage}
+              aria-label={formatMessage({ id: 'cancel' })}
+            >
+              {formatMessage({ id: 'cancel' })}
             </Button>
-            <Button fullWidth type='submit'>
-              Salvar
+            <Button
+              fullWidth
+              type='submit'
+              aria-label={formatMessage({ id: 'save' })}
+            >
+              {formatMessage({ id: 'save' })}
             </Button>
           </BottomButtons>
         </VerticalSpace>

@@ -11,7 +11,7 @@ type itemType = {
 }
 
 type ItemCardProps = {
-  left?: ReactNode
+  left?: ({ editMode }: { editMode: boolean }) => ReactNode
   item: itemType
   onEdit: (item: itemType) => void
   onDelete: (item: itemType) => void
@@ -42,13 +42,14 @@ export const ItemCard: FunctionComponent<ItemCardProps> = ({
   return (
     <form onSubmit={onSubmit}>
       <Box
-        left={left}
+        left={left && left({ editMode })}
         variant={editMode ? 'concave' : 'convex'}
         right={
           <Styled.Icons>
             {editMode ? (
               <>
                 <IconButton
+                  aria-label='Sair da edição'
                   onClick={() => {
                     setNewText(text)
                     setEditMode(false)
@@ -56,20 +57,21 @@ export const ItemCard: FunctionComponent<ItemCardProps> = ({
                 >
                   <FiX />
                 </IconButton>
-                <IconButton type='submit'>
+                <IconButton aria-label='Salvar' type='submit'>
                   <FiCheck />
                 </IconButton>
               </>
             ) : (
               <>
                 <IconButton
+                  aria-label='Edição'
                   onClick={(e) => {
                     setEditMode(true)
                   }}
                 >
                   <FiEdit2 />
                 </IconButton>
-                <IconButton onClick={() => onDelete(item)}>
+                <IconButton aria-label='Excluir' onClick={() => onDelete(item)}>
                   <FiTrash />
                 </IconButton>
               </>

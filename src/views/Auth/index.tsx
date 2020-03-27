@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { useMutation } from '@apollo/react-hooks'
+import { useIntl } from 'react-intl'
 import { loginTheme, registerTheme } from './theme'
 import {
   PageTitle,
@@ -16,6 +17,10 @@ import { REGISTER_MUTATION } from '../../gqls/register'
 import { useInternalTheme } from '../../hooks/useInternalTheme'
 
 const Auth = () => {
+  const { formatMessage } = useIntl()
+  const registerMessage = formatMessage({ id: 'register' })
+  const loginMessage = formatMessage({ id: 'login' })
+
   const [loginMode, setLoginMode] = useState(true)
   useInternalTheme(loginMode ? loginTheme : registerTheme)
 
@@ -53,11 +58,11 @@ const Auth = () => {
     <Container center>
       <form onSubmit={onSubmit}>
         <VerticalSpace>
-          <PageTitle text={loginMode ? 'Login' : 'Registrar'} />
+          <PageTitle text={loginMode ? loginMessage : registerMessage} />
           {!loginMode && (
             <Input
               name='given-name'
-              placeholder='Primeiro nome'
+              placeholder={formatMessage({ id: 'firstName' })}
               value={firstName}
               onChange={({
                 target: { value },
@@ -67,7 +72,7 @@ const Auth = () => {
             />
           )}
           <Input
-            placeholder='Email'
+            placeholder={formatMessage({ id: 'email' })}
             type='email'
             value={email}
             onChange={({ target: { value } }) => setEmail(value)}
@@ -77,11 +82,20 @@ const Auth = () => {
             onChange={({ target: { value } }) => setPassword(value)}
           />
           <BottomButtons>
-            <Button fullWidth flat onClick={toggleLoginState}>
-              {loginMode ? 'Registrar' : 'Entrar'}
+            <Button
+              fullWidth
+              flat
+              onClick={toggleLoginState}
+              aria-label={loginMode ? registerMessage : loginMessage}
+            >
+              {loginMode ? registerMessage : loginMessage}
             </Button>
-            <Button fullWidth type='submit'>
-              {loginMode ? 'Entrar' : 'Registrar'}
+            <Button
+              fullWidth
+              type='submit'
+              aria-label={loginMode ? loginMessage : registerMessage}
+            >
+              {loginMode ? loginMessage : registerMessage}
             </Button>
           </BottomButtons>
         </VerticalSpace>

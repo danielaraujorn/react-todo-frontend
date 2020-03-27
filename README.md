@@ -4,16 +4,19 @@
 
 ## Made using
 
+- Neumorphism design
 - React
 - Typescript
 - Apollo
+- Graphql
 - JWT
-- Neumorphism
 - Deployed on Netlify
-  <!-- - Tslint -->
-  <!-- - Prettier -->
+- Tslint
+- Prettier
+- Internationalization
 
 ## Steps to start server
 
+- You'll need to create a `.env` file as in `.env.sample`
 - `npm install`
 - `npm start`

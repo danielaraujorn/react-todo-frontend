@@ -15,7 +15,7 @@ export type themeType = {
 
 export const theme: themeType = {
   primary: {
-    main: '#666',
+    main: '#888',
   },
   text: {
     color: 'white',

@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { FiCheck, FiUser } from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
+import { useIntl } from 'react-intl'
 import { theme } from './theme'
 import {
   PageTitle,
@@ -19,6 +20,8 @@ import { DELETE_LIST_MUTATION } from '../../gqls/deleteList'
 import { useInternalTheme } from '../../hooks/useInternalTheme'
 
 const Lists = () => {
+  const { formatMessage } = useIntl()
+
   useInternalTheme(theme)
 
   const history = useHistory()
@@ -77,9 +80,12 @@ const Lists = () => {
     <Container>
       <VerticalSpace>
         <PageTitle
-          text='Listas'
+          text={formatMessage({ id: 'lists' })}
           left={
-            <IconButton onClick={() => history.push('/profile')}>
+            <IconButton
+              aria-label={formatMessage({ id: 'profile' })}
+              onClick={() => history.push('/profile')}
+            >
               <FiUser />
             </IconButton>
           }
@@ -87,13 +93,17 @@ const Lists = () => {
         <form onSubmit={onSubmit}>
           <Input
             disabled={!!loading || !!error}
-            placeholder='Nova lista'
+            placeholder={formatMessage({ id: 'newList' })}
             value={newListText}
             onChange={({ target: { value } }: { target: { value: string } }) =>
               setNewListText(value)
             }
             right={
-              <IconButton disabled={!newListText} type='submit'>
+              <IconButton
+                aria-label={formatMessage({ id: 'createList' })}
+                disabled={!newListText}
+                type='submit'
+              >
                 <FiCheck />
               </IconButton>
             }
