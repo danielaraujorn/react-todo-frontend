@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { FiCheck, FiUser } from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
-import { useIntl } from 'react-intl'
 import { theme } from './theme'
 import {
   PageTitle,
@@ -18,9 +17,10 @@ import { CREATE_LIST_MUTATION } from '../../gqls/createList'
 import { EDIT_LIST_MUTATION } from '../../gqls/editList'
 import { DELETE_LIST_MUTATION } from '../../gqls/deleteList'
 import { useInternalTheme } from '../../hooks/useInternalTheme'
+import { useFormatMessage } from '../../hooks/useFormatMessage'
 
 const Lists = () => {
-  const { formatMessage } = useIntl()
+  const formatMessage = useFormatMessage()
 
   useInternalTheme(theme)
 
@@ -60,7 +60,7 @@ const Lists = () => {
       lists: { items?: { id: string; text: string }[]; total?: number }
     } = data
     const { items = [] } = lists
-    return items.map((item) => (
+    return items.map(item => (
       <ItemCard
         key={item.id}
         onClick={({ id }: { id: string }) => history.push('/' + id)}
@@ -80,10 +80,10 @@ const Lists = () => {
     <Container>
       <VerticalSpace>
         <PageTitle
-          text={formatMessage({ id: 'lists' })}
+          text={formatMessage('lists')}
           left={
             <IconButton
-              aria-label={formatMessage({ id: 'profile' })}
+              aria-label={formatMessage('profile')}
               onClick={() => history.push('/profile')}
             >
               <FiUser />
@@ -93,14 +93,14 @@ const Lists = () => {
         <form onSubmit={onSubmit}>
           <Input
             disabled={!!loading || !!error}
-            placeholder={formatMessage({ id: 'newList' })}
+            placeholder={formatMessage('newList')}
             value={newListText}
             onChange={({ target: { value } }: { target: { value: string } }) =>
               setNewListText(value)
             }
             right={
               <IconButton
-                aria-label={formatMessage({ id: 'createList' })}
+                aria-label={formatMessage('createList')}
                 disabled={!newListText}
                 type='submit'
               >

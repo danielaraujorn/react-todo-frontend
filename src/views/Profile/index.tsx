@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
-import { useIntl } from 'react-intl'
 import { theme } from './theme'
 import {
   PageTitle,
@@ -18,9 +17,10 @@ import {
 import { useInternalTheme } from '../../hooks/useInternalTheme'
 import { OWN_USER_QUERY } from '../../gqls/ownUser'
 import { UPDATE_USER__MUTATION } from '../../gqls/updateUser'
+import { useFormatMessage } from '../../hooks/useFormatMessage'
 
 const Profile = () => {
-  const { formatMessage } = useIntl()
+  const formatMessage = useFormatMessage()
 
   useInternalTheme(theme)
 
@@ -66,10 +66,10 @@ const Profile = () => {
       <form onSubmit={onSubmit}>
         <VerticalSpace>
           <PageTitle
-            text={formatMessage({ id: 'profile' })}
+            text={formatMessage('profile')}
             left={
               <IconButton
-                aria-label={formatMessage({ id: 'lists' })}
+                aria-label={formatMessage('lists')}
                 onClick={toHomePage}
               >
                 <FiArrowLeft />
@@ -78,14 +78,14 @@ const Profile = () => {
           />
           <Input
             name='given-name'
-            placeholder={formatMessage({ id: 'firstName' })}
+            placeholder={formatMessage('firstName')}
             value={firstName}
             onChange={({ target: { value } }: { target: { value: string } }) =>
               setState({ firstName: value })
             }
           />
           <Input
-            placeholder={formatMessage({ id: 'email' })}
+            placeholder={formatMessage('email')}
             type='email'
             value={email}
             onChange={({ target: { value } }: { target: { value: string } }) =>
@@ -103,16 +103,12 @@ const Profile = () => {
               fullWidth
               flat
               onClick={toHomePage}
-              aria-label={formatMessage({ id: 'cancel' })}
+              aria-label={formatMessage('cancel')}
             >
-              {formatMessage({ id: 'cancel' })}
+              {formatMessage('cancel')}
             </Button>
-            <Button
-              fullWidth
-              type='submit'
-              aria-label={formatMessage({ id: 'save' })}
-            >
-              {formatMessage({ id: 'save' })}
+            <Button fullWidth type='submit' aria-label={formatMessage('save')}>
+              {formatMessage('save')}
             </Button>
           </BottomButtons>
         </VerticalSpace>

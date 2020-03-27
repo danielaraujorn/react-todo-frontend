@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react'
 import { useMutation } from '@apollo/react-hooks'
-import { useIntl } from 'react-intl'
 import { loginTheme, registerTheme } from './theme'
 import {
   PageTitle,
@@ -15,11 +14,12 @@ import { AuthContext } from '../../contexts/AuthContext'
 import { LOGIN_MUTATION } from '../../gqls/login'
 import { REGISTER_MUTATION } from '../../gqls/register'
 import { useInternalTheme } from '../../hooks/useInternalTheme'
+import { useFormatMessage } from '../../hooks/useFormatMessage'
 
 const Auth = () => {
-  const { formatMessage } = useIntl()
-  const registerMessage = formatMessage({ id: 'register' })
-  const loginMessage = formatMessage({ id: 'login' })
+  const formatMessage = useFormatMessage()
+  const registerMessage = formatMessage('register')
+  const loginMessage = formatMessage('login')
 
   const [loginMode, setLoginMode] = useState(true)
   useInternalTheme(loginMode ? loginTheme : registerTheme)
@@ -62,7 +62,7 @@ const Auth = () => {
           {!loginMode && (
             <Input
               name='given-name'
-              placeholder={formatMessage({ id: 'firstName' })}
+              placeholder={formatMessage('firstName')}
               value={firstName}
               onChange={({
                 target: { value },
@@ -72,7 +72,7 @@ const Auth = () => {
             />
           )}
           <Input
-            placeholder={formatMessage({ id: 'email' })}
+            placeholder={formatMessage('email')}
             type='email'
             value={email}
             onChange={({ target: { value } }) => setEmail(value)}

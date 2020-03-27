@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import { FiCheck, FiArrowLeft } from 'react-icons/fi'
 import { useParams } from 'react-router-dom'
-import { useIntl } from 'react-intl'
 import * as Styled from './style'
 import { theme } from './theme'
 import {
@@ -21,9 +20,10 @@ import { DELETE_TODO_MUTATION } from '../../gqls/deleteTodo'
 import { LIST_QUERY } from '../../gqls/list'
 import { TODOS_QUERY } from '../../gqls/todos'
 import { useInternalTheme } from '../../hooks/useInternalTheme'
+import { useFormatMessage } from '../../hooks/useFormatMessage'
 
 const Todos = () => {
-  const { formatMessage } = useIntl()
+  const formatMessage = useFormatMessage()
 
   useInternalTheme(theme)
 
@@ -73,7 +73,7 @@ const Todos = () => {
             completed={completed}
             left={({ editMode }) => (
               <IconButton
-                aria-label={formatMessage({ id: 'toggleTodo' })}
+                aria-label={formatMessage('toggleTodo')}
                 flat
                 disabled={editMode}
                 onClick={() =>
@@ -108,7 +108,7 @@ const Todos = () => {
           text={listData?.list?.text}
           left={
             <Link to='/'>
-              <IconButton aria-label={formatMessage({ id: 'lists' })}>
+              <IconButton aria-label={formatMessage('lists')}>
                 <FiArrowLeft />
               </IconButton>
             </Link>
@@ -117,14 +117,14 @@ const Todos = () => {
         <form onSubmit={onSubmit}>
           <Input
             disabled={!!todosLoading || !todosData}
-            placeholder={formatMessage({ id: 'newTodo' })}
+            placeholder={formatMessage('newTodo')}
             value={newTodoText}
             onChange={({ target: { value } }: { target: { value: string } }) =>
               setNewTodoText(value)
             }
             right={
               <IconButton
-                aria-label={formatMessage({ id: 'createTodo' })}
+                aria-label={formatMessage('createTodo')}
                 disabled={!newTodoText}
                 type='submit'
               >
