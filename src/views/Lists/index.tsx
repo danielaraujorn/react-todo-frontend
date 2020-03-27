@@ -60,7 +60,7 @@ const Lists = () => {
       lists: { items?: { id: string; text: string }[]; total?: number }
     } = data
     const { items = [] } = lists
-    return items.map(item => (
+    return items.map((item) => (
       <ItemCard
         key={item.id}
         onClick={({ id }: { id: string }) => history.push('/' + id)}

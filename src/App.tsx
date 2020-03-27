@@ -35,14 +35,14 @@ const App = () => {
   }, [client])
 
   const language = navigator.language.split(/[-_]/)[0]
-  const selectedMessages = messages[language] || messages['en']
+  const selectedMessages = messages[language] || messages.en
 
   return (
     <AuthContext.Provider value={{ logged, logIn, logOut }}>
       <InternalThemeContext.Provider
         value={{
           theme: themeSelected,
-          setTheme: newTheme => {
+          setTheme: (newTheme) => {
             const metaThemeColor = document.querySelector(
               'meta[name=theme-color]',
             )
