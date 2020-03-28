@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
+import ReactGA from 'react-ga'
 import { FiCheck, FiArrowLeft } from 'react-icons/fi'
 import { useParams } from 'react-router-dom'
 import * as Styled from './style'
@@ -9,7 +10,6 @@ import {
   Input,
   ItemCard,
   ItemsLoading,
-  Container,
   IconButton,
   VerticalSpace,
   Link,
@@ -24,6 +24,10 @@ import { useFormatMessage } from '../../hooks/useFormatMessage'
 
 const Todos = () => {
   const formatMessage = useFormatMessage()
+
+  useEffect(() => {
+    ReactGA.pageview('todos')
+  })
 
   useInternalTheme(theme)
 
@@ -102,40 +106,38 @@ const Todos = () => {
   }, [todosLoading, todosData, formatMessage, editTodo, listId, deleteTodo])
 
   return (
-    <Container>
-      <VerticalSpace>
-        <PageTitle
-          text={listData?.list?.text}
-          left={
-            <Link to='/'>
-              <IconButton aria-label={formatMessage('lists')}>
-                <FiArrowLeft />
-              </IconButton>
-            </Link>
+    <VerticalSpace>
+      <PageTitle
+        text={listData?.list?.text}
+        left={
+          <Link to='/'>
+            <IconButton aria-label={formatMessage('lists')}>
+              <FiArrowLeft />
+            </IconButton>
+          </Link>
+        }
+      />
+      <form onSubmit={onSubmit}>
+        <Input
+          disabled={!!todosLoading || !todosData}
+          placeholder={formatMessage('newTodo')}
+          value={newTodoText}
+          onChange={({ target: { value } }: { target: { value: string } }) =>
+            setNewTodoText(value)
+          }
+          right={
+            <IconButton
+              aria-label={formatMessage('createTodo')}
+              disabled={!newTodoText}
+              type='submit'
+            >
+              <FiCheck />
+            </IconButton>
           }
         />
-        <form onSubmit={onSubmit}>
-          <Input
-            disabled={!!todosLoading || !todosData}
-            placeholder={formatMessage('newTodo')}
-            value={newTodoText}
-            onChange={({ target: { value } }: { target: { value: string } }) =>
-              setNewTodoText(value)
-            }
-            right={
-              <IconButton
-                aria-label={formatMessage('createTodo')}
-                disabled={!newTodoText}
-                type='submit'
-              >
-                <FiCheck />
-              </IconButton>
-            }
-          />
-        </form>
-        {todosList}
-      </VerticalSpace>
-    </Container>
+      </form>
+      {todosList}
+    </VerticalSpace>
   )
 }
 

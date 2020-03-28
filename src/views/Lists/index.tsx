@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
+import ReactGA from 'react-ga'
 import { FiCheck, FiUser } from 'react-icons/fi'
 import { useHistory } from 'react-router-dom'
 import { theme } from './theme'
@@ -8,7 +9,6 @@ import {
   Input,
   ItemCard,
   ItemsLoading,
-  Container,
   IconButton,
   VerticalSpace,
 } from '../../components'
@@ -18,9 +18,14 @@ import { EDIT_LIST_MUTATION } from '../../gqls/editList'
 import { DELETE_LIST_MUTATION } from '../../gqls/deleteList'
 import { useInternalTheme } from '../../hooks/useInternalTheme'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
+import { OWN_USER_QUERY } from '../../gqls/ownUser'
 
 const Lists = () => {
   const formatMessage = useFormatMessage()
+
+  useEffect(() => {
+    ReactGA.pageview('lists')
+  })
 
   useInternalTheme(theme)
 
@@ -76,42 +81,46 @@ const Lists = () => {
     ))
   }, [data, deleteList, editList, error, history, loading])
 
+  const { data: userData } = useQuery(OWN_USER_QUERY)
+
+  useEffect(() => {
+    if (userData?.ownUser?.id) ReactGA.set({ userId: userData.ownUser.id })
+  }, [userData])
+
   return (
-    <Container>
-      <VerticalSpace>
-        <PageTitle
-          text={formatMessage('lists')}
-          left={
+    <VerticalSpace>
+      <PageTitle
+        text={formatMessage('lists')}
+        left={
+          <IconButton
+            aria-label={formatMessage('profile')}
+            onClick={() => history.push('/profile')}
+          >
+            <FiUser />
+          </IconButton>
+        }
+      />
+      <form onSubmit={onSubmit}>
+        <Input
+          disabled={!!loading || !!error}
+          placeholder={formatMessage('newList')}
+          value={newListText}
+          onChange={({ target: { value } }: { target: { value: string } }) =>
+            setNewListText(value)
+          }
+          right={
             <IconButton
-              aria-label={formatMessage('profile')}
-              onClick={() => history.push('/profile')}
+              aria-label={formatMessage('createList')}
+              disabled={!newListText}
+              type='submit'
             >
-              <FiUser />
+              <FiCheck />
             </IconButton>
           }
         />
-        <form onSubmit={onSubmit}>
-          <Input
-            disabled={!!loading || !!error}
-            placeholder={formatMessage('newList')}
-            value={newListText}
-            onChange={({ target: { value } }: { target: { value: string } }) =>
-              setNewListText(value)
-            }
-            right={
-              <IconButton
-                aria-label={formatMessage('createList')}
-                disabled={!newListText}
-                type='submit'
-              >
-                <FiCheck />
-              </IconButton>
-            }
-          />
-        </form>
-        {listsList}
-      </VerticalSpace>
-    </Container>
+      </form>
+      {listsList}
+    </VerticalSpace>
   )
 }
 

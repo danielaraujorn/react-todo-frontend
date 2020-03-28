@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useMutation } from '@apollo/react-hooks'
+import ReactGA from 'react-ga'
 import { loginTheme, registerTheme } from './theme'
 import {
   PageTitle,
   Input,
-  Container,
   Button,
   BottomButtons,
   PasswordInput,
@@ -23,6 +23,10 @@ const Auth = () => {
 
   const [loginMode, setLoginMode] = useState(true)
   useInternalTheme(loginMode ? loginTheme : registerTheme)
+
+  useEffect(() => ReactGA.pageview(loginMode ? 'login' : 'register'), [
+    loginMode,
+  ])
 
   const { logIn } = useContext(AuthContext)
 
@@ -55,52 +59,48 @@ const Auth = () => {
   const toggleLoginState = () => setLoginMode(!loginMode)
 
   return (
-    <Container center>
-      <form onSubmit={onSubmit}>
-        <VerticalSpace>
-          <PageTitle text={loginMode ? loginMessage : registerMessage} />
-          {!loginMode && (
-            <Input
-              name='given-name'
-              placeholder={formatMessage('firstName')}
-              value={firstName}
-              onChange={({
-                target: { value },
-              }: {
-                target: { value: string }
-              }) => setFirstName(value)}
-            />
-          )}
+    <form onSubmit={onSubmit}>
+      <VerticalSpace>
+        <PageTitle text={loginMode ? loginMessage : registerMessage} />
+        {!loginMode && (
           <Input
-            placeholder={formatMessage('email')}
-            type='email'
-            value={email}
-            onChange={({ target: { value } }) => setEmail(value)}
+            name='given-name'
+            placeholder={formatMessage('firstName')}
+            value={firstName}
+            onChange={({ target: { value } }: { target: { value: string } }) =>
+              setFirstName(value)
+            }
           />
-          <PasswordInput
-            value={password}
-            onChange={({ target: { value } }) => setPassword(value)}
-          />
-          <BottomButtons>
-            <Button
-              fullWidth
-              flat
-              onClick={toggleLoginState}
-              aria-label={loginMode ? registerMessage : loginMessage}
-            >
-              {loginMode ? registerMessage : loginMessage}
-            </Button>
-            <Button
-              fullWidth
-              type='submit'
-              aria-label={loginMode ? loginMessage : registerMessage}
-            >
-              {loginMode ? loginMessage : registerMessage}
-            </Button>
-          </BottomButtons>
-        </VerticalSpace>
-      </form>
-    </Container>
+        )}
+        <Input
+          placeholder={formatMessage('email')}
+          type='email'
+          value={email}
+          onChange={({ target: { value } }) => setEmail(value)}
+        />
+        <PasswordInput
+          value={password}
+          onChange={({ target: { value } }) => setPassword(value)}
+        />
+        <BottomButtons>
+          <Button
+            fullWidth
+            flat
+            onClick={toggleLoginState}
+            aria-label={loginMode ? registerMessage : loginMessage}
+          >
+            {loginMode ? registerMessage : loginMessage}
+          </Button>
+          <Button
+            fullWidth
+            type='submit'
+            aria-label={loginMode ? loginMessage : registerMessage}
+          >
+            {loginMode ? loginMessage : registerMessage}
+          </Button>
+        </BottomButtons>
+      </VerticalSpace>
+    </form>
   )
 }
 

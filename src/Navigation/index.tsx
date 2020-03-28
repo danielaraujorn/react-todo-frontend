@@ -3,8 +3,9 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
 } from 'react-router-dom'
+import { Logo, Container } from '../components'
 import { AuthContext } from '../contexts/AuthContext'
 
 const Auth = lazy(() => import('../views/Auth'))
@@ -52,11 +53,14 @@ export const Navigation = () => {
   const { logged } = useContext(AuthContext)
   const DefinitiveRoutes = useMemo(
     () => (logged ? PrivateRoutes : PublicRoutes),
-    [logged]
+    [logged],
   )
   return (
     <Router>
-      <DefinitiveRoutes />
+      <Container center={!logged}>
+        <Logo big={!logged} />
+        <DefinitiveRoutes />
+      </Container>
     </Router>
   )
 }

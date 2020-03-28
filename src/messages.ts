@@ -11,9 +11,9 @@ export const messages = {
     lists: 'Lists',
     newList: 'New list',
     createList: 'Create List',
-    newTodo: 'New item',
-    createTodo: 'Create item',
-    toggleTodo: 'Change item state',
+    newTodo: 'New task',
+    createTodo: 'Create task',
+    toggleTodo: 'Change task state',
   },
   pt: {
     cancel: 'Cancelar',

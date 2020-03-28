@@ -4,6 +4,8 @@ import { ApolloProvider } from '@apollo/react-hooks'
 import { client } from './apollo'
 import * as serviceWorker from './serviceWorker'
 import App from './App'
+import ReactGA from 'react-ga'
+ReactGA.initialize('UA-102773432-3')
 
 ReactDOM.render(
   <React.StrictMode>

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { useMutation, useQuery } from '@apollo/react-hooks'
+import ReactGA from 'react-ga'
 import { useHistory } from 'react-router-dom'
 import { FiArrowLeft } from 'react-icons/fi'
 import { theme } from './theme'
 import {
   PageTitle,
   Input,
-  Container,
   Button,
   BottomButtons,
   IconButton,
@@ -21,6 +21,10 @@ import { useFormatMessage } from '../../hooks/useFormatMessage'
 
 const Profile = () => {
   const formatMessage = useFormatMessage()
+
+  useEffect(() => {
+    ReactGA.pageview('profile')
+  })
 
   useInternalTheme(theme)
 
@@ -62,58 +66,56 @@ const Profile = () => {
   }
 
   return (
-    <Container>
-      <form onSubmit={onSubmit}>
-        <VerticalSpace>
-          <PageTitle
-            text={formatMessage('profile')}
-            left={
-              <IconButton
-                aria-label={formatMessage('lists')}
-                onClick={toHomePage}
-              >
-                <FiArrowLeft />
-              </IconButton>
-            }
-          />
-          <Input
-            name='given-name'
-            placeholder={formatMessage('firstName')}
-            value={firstName}
-            onChange={({ target: { value } }: { target: { value: string } }) =>
-              setState({ firstName: value })
-            }
-          />
-          <Input
-            placeholder={formatMessage('email')}
-            type='email'
-            value={email}
-            onChange={({ target: { value } }: { target: { value: string } }) =>
-              setState({ email: value })
-            }
-          />
-          <PasswordInput
-            value={password}
-            onChange={({ target: { value } }: { target: { value: string } }) =>
-              setState({ password: value })
-            }
-          />
-          <BottomButtons>
-            <Button
-              fullWidth
-              flat
+    <form onSubmit={onSubmit}>
+      <VerticalSpace>
+        <PageTitle
+          text={formatMessage('profile')}
+          left={
+            <IconButton
+              aria-label={formatMessage('lists')}
               onClick={toHomePage}
-              aria-label={formatMessage('cancel')}
             >
-              {formatMessage('cancel')}
-            </Button>
-            <Button fullWidth type='submit' aria-label={formatMessage('save')}>
-              {formatMessage('save')}
-            </Button>
-          </BottomButtons>
-        </VerticalSpace>
-      </form>
-    </Container>
+              <FiArrowLeft />
+            </IconButton>
+          }
+        />
+        <Input
+          name='given-name'
+          placeholder={formatMessage('firstName')}
+          value={firstName}
+          onChange={({ target: { value } }: { target: { value: string } }) =>
+            setState({ firstName: value })
+          }
+        />
+        <Input
+          placeholder={formatMessage('email')}
+          type='email'
+          value={email}
+          onChange={({ target: { value } }: { target: { value: string } }) =>
+            setState({ email: value })
+          }
+        />
+        <PasswordInput
+          value={password}
+          onChange={({ target: { value } }: { target: { value: string } }) =>
+            setState({ password: value })
+          }
+        />
+        <BottomButtons>
+          <Button
+            fullWidth
+            flat
+            onClick={toHomePage}
+            aria-label={formatMessage('cancel')}
+          >
+            {formatMessage('cancel')}
+          </Button>
+          <Button fullWidth type='submit' aria-label={formatMessage('save')}>
+            {formatMessage('save')}
+          </Button>
+        </BottomButtons>
+      </VerticalSpace>
+    </form>
   )
 }
 

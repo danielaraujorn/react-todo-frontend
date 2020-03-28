@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react'
 import { ThemeProvider, ThemeConsumer } from 'styled-components'
 import { IconContext } from 'react-icons'
 import { IntlProvider } from 'react-intl'
+import { useApolloClient } from '@apollo/react-hooks'
 import { messages } from './messages'
 import { Root } from './components'
 import { Navigation } from './Navigation'
@@ -9,7 +10,6 @@ import { theme, themeType } from './theme'
 import { InternalThemeContext } from './contexts/InternalThemeContext'
 import { AuthContext } from './contexts/AuthContext'
 import { setAuthToken, deleteAuthToken, getAuthToken } from './utils/cookies'
-import { useApolloClient } from '@apollo/react-hooks'
 
 const App = () => {
   const client = useApolloClient()
