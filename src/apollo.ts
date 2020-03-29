@@ -7,7 +7,7 @@ const formatToken = () => {
 }
 
 export const client = new ApolloClient({
-  uri: process.env.REACT_APP_SERVER_URL,
+  uri: process.env.REACT_APP_SERVER_URL + '/graphql',
   request: (operation) => {
     operation.setContext({
       headers: { Authorization: formatToken() },

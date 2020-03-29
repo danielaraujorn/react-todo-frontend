@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useMemo, useContext } from 'react'
+import React, { useMemo, useContext } from 'react'
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,45 +8,30 @@ import {
 import { Logo, Container } from '../components'
 import { AuthContext } from '../contexts/AuthContext'
 
-const Auth = lazy(() => import('../views/Auth'))
-const Lists = lazy(() => import('../views/Lists'))
-const Todos = lazy(() => import('../views/Todos'))
-const Profile = lazy(() => import('../views/Profile'))
+import { Todos, Lists, Auth, Profile } from '../views'
 
 const PublicRoutes = () => (
-  <>
-    <Switch>
-      <Route exact path='/'>
-        <Suspense fallback={<div />}>
-          <Auth />
-        </Suspense>
-      </Route>
-      <Redirect to='/' />
-    </Switch>
-  </>
+  <Switch>
+    <Route exact path='/'>
+      <Auth />
+    </Route>
+    <Redirect to='/' />
+  </Switch>
 )
 
 const PrivateRoutes = () => (
-  <>
-    <Switch>
-      <Route exact path='/'>
-        <Suspense fallback={<div />}>
-          <Lists />
-        </Suspense>
-      </Route>
-      <Route exact path='/profile'>
-        <Suspense fallback={<div />}>
-          <Profile />
-        </Suspense>
-      </Route>
-      <Route exact path='/:listId'>
-        <Suspense fallback={<div />}>
-          <Todos />
-        </Suspense>
-      </Route>
-      <Redirect to='/' />
-    </Switch>
-  </>
+  <Switch>
+    <Route exact path='/'>
+      <Lists />
+    </Route>
+    <Route exact path='/profile'>
+      <Profile />
+    </Route>
+    <Route exact path='/:listId'>
+      <Todos />
+    </Route>
+    <Redirect to='/' />
+  </Switch>
 )
 
 export const Navigation = () => {
@@ -55,6 +40,7 @@ export const Navigation = () => {
     () => (logged ? PrivateRoutes : PublicRoutes),
     [logged],
   )
+
   return (
     <Router>
       <Container center={!logged}>

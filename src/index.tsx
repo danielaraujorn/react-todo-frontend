@@ -5,7 +5,6 @@ import { client } from './apollo'
 import * as serviceWorker from './serviceWorker'
 import App from './App'
 import ReactGA from 'react-ga'
-ReactGA.initialize('UA-102773432-3')
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,4 +16,11 @@ ReactDOM.render(
 )
 
 if (process.env.NODE_ENV === 'development') serviceWorker.unregister()
-else serviceWorker.register()
+else {
+  // fetch to wake up the server
+  fetch(String(process.env.REACT_APP_SERVER_URL), {
+    mode: 'no-cors',
+  })
+  ReactGA.initialize('UA-102773432-3')
+  serviceWorker.register()
+}

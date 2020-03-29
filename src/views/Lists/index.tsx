@@ -20,7 +20,7 @@ import { useInternalTheme } from '../../hooks/useInternalTheme'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
 import { OWN_USER_QUERY } from '../../gqls/ownUser'
 
-const Lists = () => {
+export const Lists = () => {
   const formatMessage = useFormatMessage()
 
   useEffect(() => {
@@ -123,5 +123,3 @@ const Lists = () => {
     </VerticalSpace>
   )
 }
-
-export default Lists

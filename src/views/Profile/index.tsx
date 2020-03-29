@@ -19,7 +19,7 @@ import { OWN_USER_QUERY } from '../../gqls/ownUser'
 import { UPDATE_USER__MUTATION } from '../../gqls/updateUser'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
 
-const Profile = () => {
+export const Profile = () => {
   const formatMessage = useFormatMessage()
 
   useEffect(() => {
@@ -118,5 +118,3 @@ const Profile = () => {
     </form>
   )
 }
-
-export default Profile

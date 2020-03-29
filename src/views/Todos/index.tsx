@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import ReactGA from 'react-ga'
 import { FiCheck, FiArrowLeft } from 'react-icons/fi'
@@ -22,7 +22,7 @@ import { TODOS_QUERY } from '../../gqls/todos'
 import { useInternalTheme } from '../../hooks/useInternalTheme'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
 
-const Todos = () => {
+export const Todos = () => {
   const formatMessage = useFormatMessage()
 
   useEffect(() => {
@@ -66,6 +66,12 @@ const Todos = () => {
     }
     return false
   }
+
+  const inputEl = useRef<HTMLInputElement>(null)
+  useEffect(() => {
+    if (todosData && todosData?.todos?.items.length === 0)
+      inputEl?.current?.focus()
+  }, [todosData])
 
   const todosList = useMemo(() => {
     if (todosLoading || !todosData) return <ItemsLoading />
@@ -119,6 +125,7 @@ const Todos = () => {
       />
       <form onSubmit={onSubmit}>
         <Input
+          ref={inputEl}
           disabled={!!todosLoading || !todosData}
           placeholder={formatMessage('newTodo')}
           value={newTodoText}
@@ -140,5 +147,3 @@ const Todos = () => {
     </VerticalSpace>
   )
 }
-
-export default Todos

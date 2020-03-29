@@ -16,7 +16,7 @@ import { REGISTER_MUTATION } from '../../gqls/register'
 import { useInternalTheme } from '../../hooks/useInternalTheme'
 import { useFormatMessage } from '../../hooks/useFormatMessage'
 
-const Auth = () => {
+export const Auth = () => {
   const formatMessage = useFormatMessage()
   const registerMessage = formatMessage('register')
   const loginMessage = formatMessage('login')
@@ -103,5 +103,3 @@ const Auth = () => {
     </form>
   )
 }
-
-export default Auth

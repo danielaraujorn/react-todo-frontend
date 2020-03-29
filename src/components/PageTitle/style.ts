@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
 export const PageTitle = styled.h1`
-  color: ${({ theme }) => theme.text.color};
+  color: ${({ theme }) => theme.primary.dark};
   margin: 0;
-  text-shadow: 3px 3px 8px #0002;
+  transition-duration: 150ms;
 `
 export const Left = styled.div`
   height: fit-content;

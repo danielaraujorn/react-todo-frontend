@@ -27,8 +27,8 @@ export const messages = {
     lists: 'Listas',
     newList: 'Nova lista',
     createList: 'Criar lista',
-    newTodo: 'Novo item',
-    createTodo: 'Criar item',
-    toggleTodo: 'Mudar estado do item',
+    newTodo: 'Nova tarefa',
+    createTodo: 'Criar tarefa',
+    toggleTodo: 'Mudar estado da tarefa',
   },
 } as { [key: string]: Record<string, string> }
