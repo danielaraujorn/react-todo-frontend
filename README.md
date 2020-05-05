@@ -2,6 +2,16 @@
 
 ## [Online link](https://react-todo-frontend.netlify.com)
 
+## Results
+
+- Mobile
+
+![GitHub Logo](/screenshots/Mobile.png)
+
+- Desktop
+
+![GitHub Logo](/screenshots/Desktop.png)
+
 ## Made using
 
 - Neumorphism design
